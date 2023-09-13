@@ -2436,7 +2436,7 @@ BOOL CGridCtrl::PasteTextToGrid(CCellID cell, COleDataObject* pDataObject,
 
     // CF_TEXT is ANSI text, so we need to allocate a char* buffer
     // to hold this.
-    LPSTR szBuffer = new char[::GlobalSize(hmem)]; // FIX: Use LPSTR char here
+    LPSTR szBuffer = new CHAR[::GlobalSize(hmem)]; // FIX: Use LPSTR char here
     if (!szBuffer)
         return FALSE;
 
@@ -2445,8 +2445,13 @@ BOOL CGridCtrl::PasteTextToGrid(CCellID cell, COleDataObject* pDataObject,
 
     // Now store in generic TCHAR form so we no longer have to deal with
     // ANSI/UNICODE problems
-    CString strText(szBuffer);
-    delete szBuffer;
+    CString strText;
+    for (size_t iBuf = 0; iBuf < ::GlobalSize( hmem ); ++iBuf)
+    {
+        strText.AppendChar( szBuffer[iBuf] );
+    }
+
+    delete [] szBuffer;
 
     // Parse text data and set in cells...
     strText.LockBuffer();
@@ -2462,7 +2467,7 @@ BOOL CGridCtrl::PasteTextToGrid(CCellID cell, COleDataObject* pDataObject,
         nIndex = strLine.Find(_T("\n"));
 
         // Store the remaining chars after the newline
-        CString strNext = (nIndex < 0)? _T("")  : strLine.Mid(nIndex + 1);
+        CString strNext = (nIndex < 0) ? _T("")  : (LPCTSTR)strLine.Mid(nIndex + 1);
 
         // Remove all chars after the newline
         if (nIndex >= 0)
@@ -2509,7 +2514,7 @@ BOOL CGridCtrl::PasteTextToGrid(CCellID cell, COleDataObject* pDataObject,
 				if (iColVis > PasteRange.GetMaxCol()) PasteRange.SetMaxCol(iColVis);
             }
 
-            strLine = (nLineIndex >= 0)? strLine.Mid(nLineIndex + 1) : _T("");
+            strLine = (nLineIndex >= 0) ? (LPCTSTR)strLine.Mid(nLineIndex + 1) : _T("");
             nLineIndex = strLine.FindOneOf(_T("\t,"));
             strCellText = (nLineIndex >= 0)? strLine.Left(nLineIndex) : strLine;
 
@@ -5163,14 +5168,13 @@ void CGridCtrl::ExpandColumnsToFit(BOOL bExpandFixed /*=TRUE*/)
 
     EnableScrollBars(SB_HORZ, FALSE);
 
-    int col;
     CRect rect;
     GetClientRect(rect);
 
     int nFirstColumn = (bExpandFixed)? 0 : GetFixedColumnCount();
 
     int nNumColumnsAffected = 0;
-    for (col = nFirstColumn; col < GetColumnCount(); col++)
+    for (int col = nFirstColumn; col < GetColumnCount(); col++)
     {
         if (m_arColWidths[col] > 0)
             nNumColumnsAffected++;
@@ -5183,7 +5187,7 @@ void CGridCtrl::ExpandColumnsToFit(BOOL bExpandFixed /*=TRUE*/)
     int nDifference = rect.Width() -(int) virtualWidth;
     int nColumnAdjustment = nDifference / nNumColumnsAffected;
 
-    for (col = nFirstColumn; col < GetColumnCount(); col++)
+    for (int col = nFirstColumn; col < GetColumnCount(); col++)
     {
         if (m_arColWidths[col] > 0)
             m_arColWidths[col] += nColumnAdjustment;    
@@ -5263,14 +5267,13 @@ void CGridCtrl::ExpandRowsToFit(BOOL bExpandFixed /*=TRUE*/)
 
     EnableScrollBars(SB_VERT, FALSE); 
 
-    int row;
     CRect rect;
     GetClientRect(rect);
     
     int nFirstRow = (bExpandFixed)? 0 : GetFixedRowCount();
 
     int nNumRowsAffected = 0;
-    for (row = nFirstRow; row < GetRowCount(); row++)
+    for (int row = nFirstRow; row < GetRowCount(); row++)
     {
         if (m_arRowHeights[row] > 0)
             nNumRowsAffected++;
@@ -5283,7 +5286,7 @@ void CGridCtrl::ExpandRowsToFit(BOOL bExpandFixed /*=TRUE*/)
     int nDifference = rect.Height() -(int) virtualHeight;
     int nRowAdjustment = nDifference / nNumRowsAffected;
     
-    for (row = nFirstRow; row < GetRowCount(); row++)
+    for (int row = nFirstRow; row < GetRowCount(); row++)
     {
         if (m_arRowHeights[row] > 0)
             m_arRowHeights[row] += nRowAdjustment;    
@@ -6032,7 +6035,7 @@ void CGridCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 
         if (IsValid(cell))
         {
-            CGridCellBase* pCell = GetCell(cell.row, cell.col);
+            pCell = GetCell(cell.row, cell.col);
             if (pCell)
                 pCell->OnDblClick(pointClickedRel);
             SendMessageToParent(cell.row, cell.col, NM_DBLCLK);
@@ -7261,7 +7264,7 @@ BOOL CGridCtrl::Save(LPCTSTR filename, TCHAR chSeparator/*=_T(',')*/)
             for (int j = 0; j < nNumColumns; j++)
             {
                 File.WriteString(GetItemText(i,j));
-                File.WriteString((j==(nNumColumns-1))? _T("\n"): strSeparator);
+                File.WriteString((j==(nNumColumns-1)) ? _T("\n") : (LPCTSTR)strSeparator);
             }
         }
 

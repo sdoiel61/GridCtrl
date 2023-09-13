@@ -245,22 +245,22 @@ public:
 
     // ***************************************************************************** //
     // These have been deprecated. Use GetDefaultCell and then set the colors
-    void     SetTextColor(COLORREF clr)      { m_cellDefault.SetTextClr(clr);        }
-    COLORREF GetTextColor()                  { return m_cellDefault.GetTextClr();    }
-    void     SetTextBkColor(COLORREF clr)    { m_cellDefault.SetBackClr(clr);        }
-    COLORREF GetTextBkColor()                { return m_cellDefault.GetBackClr();    }
-    void     SetFixedTextColor(COLORREF clr) { m_cellFixedRowDef.SetTextClr(clr); 
-                                               m_cellFixedColDef.SetTextClr(clr); 
-                                               m_cellFixedRowColDef.SetTextClr(clr); }
-    COLORREF GetFixedTextColor() const       { return m_cellFixedRowDef.GetTextClr(); }
-    void     SetFixedBkColor(COLORREF clr)   { m_cellFixedRowDef.SetBackClr(clr); 
-                                               m_cellFixedColDef.SetBackClr(clr); 
-                                               m_cellFixedRowColDef.SetBackClr(clr); }
-    COLORREF GetFixedBkColor() const         { return m_cellFixedRowDef.GetBackClr(); }
-    void     SetGridColor(COLORREF clr)      { SetGridLineColor(clr);                }
-    COLORREF GetGridColor()                  { return GetGridLineColor();            }
-    void     SetBkColor(COLORREF clr)        { SetGridBkColor(clr);                  }
-    COLORREF GetBkColor()                    { return GetGridBkColor();              }
+    //void     SetTextColor(COLORREF clr)      { m_cellDefault.SetTextClr(clr);        }
+    //COLORREF GetTextColor()                  { return m_cellDefault.GetTextClr();    }
+    //void     SetTextBkColor(COLORREF clr)    { m_cellDefault.SetBackClr(clr);        }
+    //COLORREF GetTextBkColor()                { return m_cellDefault.GetBackClr();    }
+    //void     SetFixedTextColor(COLORREF clr) { m_cellFixedRowDef.SetTextClr(clr); 
+    //                                           m_cellFixedColDef.SetTextClr(clr); 
+    //                                           m_cellFixedRowColDef.SetTextClr(clr); }
+    //COLORREF GetFixedTextColor() const       { return m_cellFixedRowDef.GetTextClr(); }
+    //void     SetFixedBkColor(COLORREF clr)   { m_cellFixedRowDef.SetBackClr(clr); 
+    //                                           m_cellFixedColDef.SetBackClr(clr); 
+    //                                           m_cellFixedRowColDef.SetBackClr(clr); }
+    //COLORREF GetFixedBkColor() const         { return m_cellFixedRowDef.GetBackClr(); }
+    //void     SetGridColor(COLORREF clr)      { SetGridLineColor(clr);                }
+    //COLORREF GetGridColor()                  { return GetGridLineColor();            }
+    //void     SetBkColor(COLORREF clr)        { SetGridBkColor(clr);                  }
+    //COLORREF GetBkColor()                    { return GetGridBkColor();              }
 
     void     SetDefCellMargin( int nMargin)  { m_cellDefault.SetMargin(nMargin); 
                                                m_cellFixedRowDef.SetMargin(nMargin); 
