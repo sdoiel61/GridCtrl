@@ -360,6 +360,11 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////
 public:
     CGridCellBase* GetCell(int nRow, int nCol) const;   // Get the actual cell!
+    template<class T>
+    inline auto CellAs(int nRow, int nCol) const -> T*
+    {
+        return dynamic_cast<T*>(GetCell( nRow, nCol ));
+    }
 
     void SetModified(BOOL bModified = TRUE, int nRow = -1, int nCol = -1);
     BOOL GetModified(int nRow = -1, int nCol = -1);
